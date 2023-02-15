@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  shop_2:
+    container_name: music
+    environment:
+      POSTGRES_DB: music
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    # image: postgres:latest
+    build: .
+    volumes:
+      - ./:/var/lib/postgresql
+    ports:
+      - 5437:5432
