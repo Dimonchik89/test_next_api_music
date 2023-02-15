@@ -24,8 +24,8 @@
     "username": "eaojnkakniyrld",
     "password": "5f21343b1e4dc26efa51ecfbb37d7fead3b7bfd7d7afdc5247aa5633fd4e25e9",
     "database": "de34lcejheehn6",
-    "host": "127.0.0.1",
-    "dialect": "ec2-54-228-125-183.eu-west-1.compute.amazonaws.com",
+    "host": "ec2-54-228-125-183.eu-west-1.compute.amazonaws.com",
+    "dialect": "postgres",
     "port": 5432,
      "dialectOptions": {
       "ssl": { 
