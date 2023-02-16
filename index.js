@@ -20,7 +20,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(path.resolve(__dirname, "static")))
 app.use(fileUpload({}))
-app.use(cors())
+app.use(cors({
+    origin: process.env.SITE_URL
+}))
 // app.use(cors({ origin: "http://localhost:3000/", credentials: false }))
 
 app.use("/api", router)
