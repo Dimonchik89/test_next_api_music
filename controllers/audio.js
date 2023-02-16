@@ -44,14 +44,6 @@ const create = async (req, res) => {
     const imgPath = path.resolve(__dirname, "..", "static/music/logo")
     const keywordsArr =keywords.split(",").map(item => item.trim())
 
-    console.log("name", name);
-    console.log("name", categoryId);
-    console.log('keywords', keywords);
-    console.log('keywordsArr', keywordsArr);
-    console.log('description', description);
-    console.log('audio', audio);
-    console.log('img', img);
-
     if(!fs.existsSync(audioPath)) {
         fs.mkdirSync(audioPath, {recursive: true})
     }
