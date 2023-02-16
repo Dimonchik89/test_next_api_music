@@ -5,33 +5,64 @@ const path = require("path")
 const fs = require("fs")
 
 const create = async (req, res) => {
-    try {
-        const {name, categoryId, keywords, description} = req.body
-        const {audio, img} = req.files
-        const audioExtension = audio.name.split(".").pop()
-        const imgExtension = img.name.split(".").pop()
+    // try {
+    //     const {name, categoryId, keywords, description} = req.body
+    //     const {audio, img} = req.files
+    //     const audioExtension = audio.name.split(".").pop()
+    //     const imgExtension = img.name.split(".").pop()
         
-        const audioName = uuid.v4() + `.${audioExtension}`
-        const imgName = uuid.v4() + `.${imgExtension}`
+    //     const audioName = uuid.v4() + `.${audioExtension}`
+    //     const imgName = uuid.v4() + `.${imgExtension}`
 
-        const audioPath = path.resolve(__dirname, "..", "static/music/audio")
-        const imgPath = path.resolve(__dirname, "..", "static/music/logo")
-        const keywordsArr =keywords.split(",").map(item => item.trim())
+    //     const audioPath = path.resolve(__dirname, "..", "static/music/audio")
+    //     const imgPath = path.resolve(__dirname, "..", "static/music/logo")
+    //     const keywordsArr =keywords.split(",").map(item => item.trim())
 
-        if(!fs.existsSync(audioPath)) {
-            fs.mkdirSync(audioPath, {recursive: true})
-        }
-        if(!fs.existsSync(imgPath)) {
-            fs.mkdirSync(imgPath, { recursive: true})
-        }
-        audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
-        img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+    //     if(!fs.existsSync(audioPath)) {
+    //         fs.mkdirSync(audioPath, {recursive: true})
+    //     }
+    //     if(!fs.existsSync(imgPath)) {
+    //         fs.mkdirSync(imgPath, { recursive: true})
+    //     }
+    //     audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+    //     img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
 
-        const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
-        return res.json(music)
-    } catch(e) {
-        return res.status(404).json({message: `Fields must be filled, ${"name", req.body.name, "categoryId", req.body.categoryId, "keywords", req.body.keywords, "description",req.body.description, "audio",req.files.audio, "img",req.files.img}`})
+    //     const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
+    //     return res.json(music)
+    // } catch(e) {
+    //     return res.status(404).json({message: `Fields must be filled`})
+    // }
+    const {name, categoryId, keywords, description} = req.body
+    const {audio, img} = req.files
+    const audioExtension = audio.name.split(".").pop()
+    const imgExtension = img.name.split(".").pop()
+    
+    const audioName = uuid.v4() + `.${audioExtension}`
+    const imgName = uuid.v4() + `.${imgExtension}`
+
+    const audioPath = path.resolve(__dirname, "..", "static/music/audio")
+    const imgPath = path.resolve(__dirname, "..", "static/music/logo")
+    const keywordsArr =keywords.split(",").map(item => item.trim())
+
+    console.log("name", name);
+    console.log("name", categoryId);
+    console.log('keywords', keywords);
+    console.log('keywordsArr', keywordsArr);
+    console.log('description', description);
+    console.log('audio', audio);
+    console.log('img', img);
+
+    if(!fs.existsSync(audioPath)) {
+        fs.mkdirSync(audioPath, {recursive: true})
     }
+    if(!fs.existsSync(imgPath)) {
+        fs.mkdirSync(imgPath, { recursive: true})
+    }
+    audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+    img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+
+    const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
+    return res.json(music)
 
 }
 
