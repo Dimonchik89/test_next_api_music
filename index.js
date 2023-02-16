@@ -12,15 +12,15 @@ var cors_proxy = require('cors-anywhere');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-var port = 3000;
-
-var host = process.env.HOST || '0.0.0.0';
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(path.resolve(__dirname, "static")))
 app.use(fileUpload({}))
-app.use(cors())
+app.use(cors({
+    origin: process.env.SITE_URL,
+    credentials: false 
+}))
 // app.use(cors({ origin: "http://localhost:3000/", credentials: false }))
 
 app.use("/api", router)
