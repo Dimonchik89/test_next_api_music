@@ -30,7 +30,7 @@ const create = async (req, res) => {
         const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
         return res.json(music)
     } catch(e) {
-        return res.status(404).json({message: `Fields must be filled`})
+        return res.status(404).json({message: e})
     }
     // const {name, categoryId, keywords, description} = req.body
     // const {audio, img} = req.files
