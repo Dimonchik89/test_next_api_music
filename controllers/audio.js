@@ -44,18 +44,21 @@ const create = async (req, res) => {
     const imgPath = path.resolve(__dirname, "..", "static/music/logo")
     const keywordsArr =keywords.split(",").map(item => item.trim())
 
-    if(!fs.existsSync(audioPath)) {
+    try {
+        if(!fs.existsSync(audioPath)) {
         fs.mkdirSync(audioPath, {recursive: true})
-    }
-    if(!fs.existsSync(imgPath)) {
-        fs.mkdirSync(imgPath, { recursive: true})
-    }
-    audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
-    img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+        }
+        if(!fs.existsSync(imgPath)) {
+            fs.mkdirSync(imgPath, { recursive: true})
+        }
+        audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+        img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
 
-    const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
-    return res.json(music)
-
+        const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
+        return res.json(music)
+    } catch(e) {
+        throw new Error(e)
+    }
 }
 
 const getAll = async (req, res) => {
@@ -99,13 +102,18 @@ const deleteAudio = async (req, res) => {
         return res.json({message: "Audio is not defined"})
     }
 
-    fs.unlink(path.resolve(__dirname, "..", "static", audio.audio), async err => {
+    try {
+        fs.unlink(path.resolve(__dirname, "..", "static", audio.audio), async err => {
         if(err) throw err
         fs.unlink(path.resolve(__dirname, "..", "static", audio.img), async err => {
             const deletedAudio = await sequelize.models.Audio.destroy({where: { id }})
             return res.json({message: `Track ${id} delete`})
+            })
         })
-    })
+    } catch(e) {
+        throw new Error(e)
+    }
+
 }
 
 const update = async (req, res) => {
@@ -126,54 +134,58 @@ const update = async (req, res) => {
     if(!oldAudio) {
         return res.json({message: "Song is not defined"})
     }
-
-    if(img && !audio) {
-        const imgExpension = img.name.split(".").pop()
-        const imgName = uuid.v4() + `.${imgExpension}`
-        fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.img), async err => {
-            if(err) throw err
-            img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
-            const Audio = await sequelize.models.Audio.update({...tailData, img: `music/logo/${imgName}`}, {where: { id }})
-            const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
-            return res.json(newAudio)
-        })
-
-    } if(!img && audio) {
-        const audioExtension = audio.name.split(".").pop()
-        const audioName = uuid.v4() + `.${audioExtension}`
-
-        fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.audio), async err => {
-            if(err) throw err
-            audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
-            const Audio = await sequelize.models.Audio.update({...tailData, audio: `music/audio/${audioName}`}, {where: { id }})
-            const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
-            return res.json(newAudio)
-        })
-
-    } if(img && audio) {
-        const audioExtension = audio.name.split(".").pop()
-        const imgExtension = img.name.split(".").pop()
-
-        const audioName = uuid.v4() + `.${audioExtension}`
-        const imgName = uuid.v4() + `.${imgExtension}`
-
-        fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.audio), async err => {
-            if(err) throw err
-            audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+    try {
+        if(img && !audio) {
+            const imgExpension = img.name.split(".").pop()
+            const imgName = uuid.v4() + `.${imgExpension}`
             fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.img), async err => {
                 if(err) throw err
                 img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
-                audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
-                const Audio = await sequelize.models.Audio.update({...tailData,  audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`}, {where: { id }})
+                const Audio = await sequelize.models.Audio.update({...tailData, img: `music/logo/${imgName}`}, {where: { id }})
                 const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
                 return res.json(newAudio)
             })
-        })
-    } if(!img && !audio) {
-        const Audio = await sequelize.models.Audio.update({...tailData}, {where: { id }})
-        const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
-        return res.json(newAudio)
+
+        } if(!img && audio) {
+            const audioExtension = audio.name.split(".").pop()
+            const audioName = uuid.v4() + `.${audioExtension}`
+
+            fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.audio), async err => {
+                if(err) throw err
+                audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+                const Audio = await sequelize.models.Audio.update({...tailData, audio: `music/audio/${audioName}`}, {where: { id }})
+                const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
+                return res.json(newAudio)
+            })
+
+        } if(img && audio) {
+            const audioExtension = audio.name.split(".").pop()
+            const imgExtension = img.name.split(".").pop()
+
+            const audioName = uuid.v4() + `.${audioExtension}`
+            const imgName = uuid.v4() + `.${imgExtension}`
+
+            fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.audio), async err => {
+                if(err) throw err
+                audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+                fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.img), async err => {
+                    if(err) throw err
+                    img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+                    audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+                    const Audio = await sequelize.models.Audio.update({...tailData,  audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`}, {where: { id }})
+                    const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
+                    return res.json(newAudio)
+                })
+            })
+        } if(!img && !audio) {
+            const Audio = await sequelize.models.Audio.update({...tailData}, {where: { id }})
+            const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
+            return res.json(newAudio)
+        }
+    } catch(e) {
+        throw new Error(e)
     }
+
 } 
 
 const download = async (req, res) => {
