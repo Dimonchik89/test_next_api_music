@@ -32,33 +32,6 @@ const create = async (req, res) => {
     } catch(e) {
         return res.status(404).json({message: e})
     }
-    // const {name, categoryId, keywords, description} = req.body
-    // const {audio, img} = req.files
-    // const audioExtension = audio.name.split(".").pop()
-    // const imgExtension = img.name.split(".").pop()
-    
-    // const audioName = uuid.v4() + `.${audioExtension}`
-    // const imgName = uuid.v4() + `.${imgExtension}`
-
-    // const audioPath = path.resolve(__dirname, "..", "static/music/audio")
-    // const imgPath = path.resolve(__dirname, "..", "static/music/logo")
-    // const keywordsArr =keywords.split(",").map(item => item.trim())
-
-    // try {
-    //     if(!fs.existsSync(audioPath)) {
-    //     fs.mkdirSync(audioPath, {recursive: true})
-    //     }
-    //     if(!fs.existsSync(imgPath)) {
-    //         fs.mkdirSync(imgPath, { recursive: true})
-    //     }
-    //     audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
-    //     img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
-
-    //     const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
-    //     return res.json(music)
-    // } catch(e) {
-    //     throw new Error(e)
-    // }
 }
 
 const getAll = async (req, res) => {
