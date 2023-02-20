@@ -20,7 +20,7 @@ app.use(fileUpload({}))
 app.use(cors({
     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
     origin: [process.env.SITE_URL, 'https://squid-app-lxuxw.ondigitalocean.app/'],
-    credentials: false 
+    credentials: false
 }))
 // app.use(cors({ origin: "http://localhost:3000/", credentials: false }))
 
