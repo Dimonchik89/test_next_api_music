@@ -50,7 +50,7 @@ const getAll = async (req, res) => {
             .map(item => item.trim().replace(",", "").toLowerCase())
             .filter(item => item != "")
         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
-        // audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.like]: `%${arrKeywords}%`}}, limit, offset})
+        // audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.like]: `%${arrKeywords}%`}}, limit, offset}) 
         // audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: sequelize.where(sequelize.fn('LOWER', sequelize.col("keywords")), 'LIKE', `%${lookupValue}%`)}, limit, offset})
     } if(categoryId && keywords) {
         const keywordsArr = keywords.trim().split(" ")
