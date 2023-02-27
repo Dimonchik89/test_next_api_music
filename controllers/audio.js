@@ -44,22 +44,24 @@ const getAll = async (req, res) => {
     let audio;
 
     if(categoryId && !keywords) {
-        audio = await sequelize.models.Audio.findAndCountAll({where: { categoryId: {[Op.like]: `%${categoryId}%`}}, limit, offset})
+        audio = await sequelize.models.Audio.findAndCountAll({where: { categoryId: {[Op.like]: `%${categoryId}%`}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
     } if(!categoryId && keywords) {
         const keywordsArr = keywords.trim().split(" ")
             .map(item => item.trim().replace(",", "").toLowerCase())
             .filter(item => item != "")
-        audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset})
+        audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
         // audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.like]: `%${arrKeywords}%`}}, limit, offset})
         // audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: sequelize.where(sequelize.fn('LOWER', sequelize.col("keywords")), 'LIKE', `%${lookupValue}%`)}, limit, offset})
     } if(categoryId && keywords) {
         const keywordsArr = keywords.trim().split(" ")
             .map(item => item.trim().replace(",", "").toLowerCase())
             .filter(item => item != "")
-        audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset})
+        audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
     } if(!categoryId && !keywords) {
-        audio = await sequelize.models.Audio.findAndCountAll({limit, offset})
+        // audio = await sequelize.models.Audio.findAndCountAll({limit, offset})
+        audio = await sequelize.models.Audio.findAndCountAll({limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
     }
+    console.log(audio);
     return res.json(audio)
 }
 
