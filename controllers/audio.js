@@ -61,7 +61,6 @@ const getAll = async (req, res) => {
         // audio = await sequelize.models.Audio.findAndCountAll({limit, offset})
         audio = await sequelize.models.Audio.findAndCountAll({limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
     }
-    console.log(audio);
     return res.json(audio)
 }
 
