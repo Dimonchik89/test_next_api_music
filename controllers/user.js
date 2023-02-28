@@ -52,7 +52,7 @@ const login = async (req, res) => {
 const auth = async (req, res) => {
     const { id, email, role } = req.user
     const token = createToken({ id, email, role })
-    return res.status(200).json({ token })
+    return res.status(200).json({ token, role: role })
 }
 
 

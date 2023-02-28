@@ -3,7 +3,7 @@ const SENDMAIL = require('../mailer/mailer')
 
 const sendEmail = async (req, res) => {
     const {link} = req.body;
-
+    console.log("link", link);
     if(!link) {
         return res.status(404).json({message: "Need add link"})
     }
@@ -20,6 +20,7 @@ const sendEmail = async (req, res) => {
         console.log("Email sent successfully");
         console.log("MESSAGE ID: ", info.messageId);
     });
+    console.log("ok");
     return res.json({message: "Email send"})
 }
 
