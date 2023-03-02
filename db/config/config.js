@@ -1,11 +1,11 @@
-{
+module.exports = {
   "development": {
-    "username": "igddrqxhgjqppd",
-    "password": "a7e23e53c1bffccd9f8f0addff63efb0729f31dadf1e9c63016ab14906f653af",
-    "database": "d9mnvac06utonn",
-    "host": "ec2-52-48-159-67.eu-west-1.compute.amazonaws.com",
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
     "dialect": "postgres",
-    "port": 5432,
+    "port": process.env.DB_PORT,
      "dialectOptions": {
       "ssl": { 
         "require": true,
@@ -21,12 +21,12 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "eaojnkakniyrld",
-    "password": "5f21343b1e4dc26efa51ecfbb37d7fead3b7bfd7d7afdc5247aa5633fd4e25e9",
-    "database": "de34lcejheehn6",
-    "host": "ec2-54-228-125-183.eu-west-1.compute.amazonaws.com",
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
     "dialect": "postgres",
-    "port": 5432,
+    "port": process.env.DB_PORT,
      "dialectOptions": {
       "ssl": { 
         "require": true,

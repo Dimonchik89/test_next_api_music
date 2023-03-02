@@ -40,3 +40,18 @@ const start = async () => {
 }
 
 start()
+
+  // "development": {
+  //   "username": "eaojnkakniyrld",
+  //   "password": "5f21343b1e4dc26efa51ecfbb37d7fead3b7bfd7d7afdc5247aa5633fd4e25e9",
+  //   "database": "de34lcejheehn6",
+  //   "host": "ec2-54-228-125-183.eu-west-1.compute.amazonaws.com",
+  //   "dialect": "postgres",
+  //   "port": 5432,
+  //    "dialectOptions": {
+  //     "ssl": { 
+  //       "require": true,
+  //       "rejectUnauthorized": false
+  //     }
+  //   }
+  // },
