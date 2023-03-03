@@ -2,6 +2,7 @@ const { sequelize } = require("../db/models/index")
 const uuid = require("uuid")
 const path = require("path")
 const fs = require("fs")
+const sharp = require("sharp")
 
 const getAllCategory = async (req, res) => {
     let category;
@@ -16,8 +17,8 @@ const getAllCategory = async (req, res) => {
 const createCategory = async (req, res) => {
     const { name } = req.body
     const { img } = req.files
-    const fileExtension = img.name.split(".").pop()
-    let fileName = uuid.v4() + `.${fileExtension}`
+    // const fileExtension = img.name.split(".").pop()
+    // let fileName = uuid.v4() + `.${fileExtension}`
 
     if(!img) {
         return res.status(404).json({message: "image is not defined"})
@@ -28,13 +29,25 @@ const createCategory = async (req, res) => {
     let category;
     try {
         const dirPath = path.resolve(__dirname, "..", "static/category")
+        let fileName = uuid.v4() + `.webp`
+
         if(!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, {recursive: true})
         }
-        img.mv(path.resolve(__dirname, "..", "static/category", fileName))
+
+        await sharp(img.data)
+            .resize({
+                width: 320,
+                height: 240
+            })
+            .toFormat('webp')
+            .toFile(path.resolve(__dirname, "..", "static/category", fileName))
+
+        // img.mv(path.resolve(__dirname, "..", "static/category", fileName))
         category = await sequelize.models.category.create({name, img: `category/${fileName}`})
     } catch(e) {
         console.error(`\n [Category controller] Error \n`, e)
+        return res.status(200).json({e})
     }
     return res.status(200).json(category)
 }

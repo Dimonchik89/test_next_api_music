@@ -3,6 +3,7 @@ const Op = Sequelize.Op;
 const uuid = require("uuid")
 const path = require("path")
 const fs = require("fs")
+const sharp = require("sharp")
 
 const create = async (req, res) => {
     try {
@@ -12,7 +13,7 @@ const create = async (req, res) => {
         const imgExtension = img.name.split(".").pop()
         
         const audioName = uuid.v4() + `.${audioExtension}`
-        const imgName = uuid.v4() + `.${imgExtension}`
+        const imgName = uuid.v4() + `.webp`
 
         const audioPath = path.resolve(__dirname, "..", "static/music/audio")
         const imgPath = path.resolve(__dirname, "..", "static/music/logo")
@@ -25,7 +26,14 @@ const create = async (req, res) => {
             fs.mkdirSync(imgPath, { recursive: true})
         }
         audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
-        img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+        // img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+        await sharp(img.data)
+            .resize({
+                width: 320,
+                height: 240
+            })
+            .toFormat('webp')
+            .toFile(path.resolve(__dirname, "..", "static/music/logo", imgName))
 
         const music = await sequelize.models.Audio.create({name, categoryId, keywords: keywordsArr, description, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`})
         return res.json(music)
