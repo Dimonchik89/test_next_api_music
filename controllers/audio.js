@@ -177,7 +177,7 @@ const update = async (req, res) => {
             return res.json(newAudio)
         }
     } catch(e) {
-        console.log(123, e);
+        console.log(123,  e);
         throw new Error(e)
     }
 
