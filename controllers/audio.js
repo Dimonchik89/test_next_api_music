@@ -17,7 +17,7 @@ const create = async (req, res) => {
 
         const audioPath = path.resolve(__dirname, "..", "static/music/audio")
         const imgPath = path.resolve(__dirname, "..", "static/music/logo")
-        const keywordsArr =keywords.split(",").map(item => item.trim())
+        const keywordsArr =keywords.split(",")?.map(item => item.trim())
 
         if(!fs.existsSync(audioPath)) {
             fs.mkdirSync(audioPath, {recursive: true})
@@ -55,13 +55,13 @@ const getAll = async (req, res) => {
         audio = await sequelize.models.Audio.findAndCountAll({where: { categoryId: {[Op.like]: `%${categoryId}%`}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
     } if(!categoryId && keywords) {
         const keywordsArr = keywords.trim().split(" ")
-            .map(item => item.trim().replace(",", "").toLowerCase())
-            .filter(item => item != "")
+            ?.map(item => item.trim().replace(",", "").toLowerCase())
+            ?.filter(item => item != "")
         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
     } if(categoryId && keywords) {
         const keywordsArr = keywords.trim().split(" ")
-            .map(item => item.trim().replace(",", "").toLowerCase())
-            .filter(item => item != "")
+            ?.map(item => item.trim().replace(",", "").toLowerCase())
+            ?.filter(item => item != "")
         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
     } if(!categoryId && !keywords) {
         // audio = await sequelize.models.Audio.findAndCountAll({limit, offset})
@@ -97,24 +97,25 @@ const deleteAudio = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const {id} = req.params
-    const { ...tailData } = req.body
-    let audio;
-    let img;
-    if(req.files) {
-        audio = req?.files?.audio;
-        img = req?.files?.img
-    }
-
-    if(!id) {
-        return res.json({message: "Id is not defined"})
-    }
-    const oldAudio = await sequelize.models.Audio.findOne({where: { id }})
-
-    if(!oldAudio) {
-        return res.json({message: "Song is not defined"})
-    }
     try {
+        const {id} = req.params
+        const { ...tailData } = req.body
+        let audio;
+        let img;
+        if(req.files) {
+            audio = req?.files?.audio;
+            img = req?.files?.img
+        }
+
+        if(!id) {
+            return res.json({message: "Id is not defined"})
+        }
+        const oldAudio = await sequelize.models.Audio.findOne({where: { id }})
+
+        if(!oldAudio) {
+            return res.json({message: "Song is not defined"})
+        }
+    
         if(img && !audio) {
             const imgExpension = img.name.split(".").pop()
             const imgName = uuid.v4() + `.${imgExpension}`
