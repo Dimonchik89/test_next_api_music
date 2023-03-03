@@ -99,7 +99,8 @@ const deleteAudio = async (req, res) => {
 const update = async (req, res) => {
     try {
         const {id} = req.params
-        const { ...tailData } = req.body
+        const { keywords, ...tailData} = req.body
+        const keywordsArr = keywords.split(",")?.map(item => item.trim())
         let audio;
         let img;
         if(req.files) {
@@ -129,7 +130,7 @@ const update = async (req, res) => {
                 //     })
                 //     .toFormat('webp')
                 //     .toFile(path.resolve(__dirname, "..", "static/music/logo", imgName))
-                const Audio = await sequelize.models.Audio.update({...tailData, img: `music/logo/${imgName}`}, {where: { id }})
+                const Audio = await sequelize.models.Audio.update({...tailData, keywordsArr, img: `music/logo/${imgName}`}, {where: { id }})
                 const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
                 return res.json(newAudio)
             })
@@ -141,7 +142,7 @@ const update = async (req, res) => {
             fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.audio), async err => {
                 if(err) throw err
                 audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
-                const Audio = await sequelize.models.Audio.update({...tailData, audio: `music/audio/${audioName}`}, {where: { id }})
+                const Audio = await sequelize.models.Audio.update({...tailData, keywordsArr, audio: `music/audio/${audioName}`}, {where: { id }})
                 const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
                 return res.json(newAudio)
             })
@@ -167,13 +168,13 @@ const update = async (req, res) => {
                     //     .toFormat('webp')
                     //     .toFile(path.resolve(__dirname, "..", "static/music/logo", imgName))
 
-                    const Audio = await sequelize.models.Audio.update({...tailData,  audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`}, {where: { id }})
+                    const Audio = await sequelize.models.Audio.update({...tailData, keywordsArr, audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`}, {where: { id }})
                     const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
                     return res.json(newAudio)
                 })
             })
         } if(!img && !audio) {
-            const Audio = await sequelize.models.Audio.update({...tailData}, {where: { id }})
+            const Audio = await sequelize.models.Audio.update({...tailData, keywordsArr}, {where: { id }})
             const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
             return res.json(newAudio)
         }
