@@ -95,9 +95,17 @@ const changeCategory = async (req, res) => {
         if(img) {
             fs.unlink(path.resolve(__dirname, "..", "static", category.img), async err => {
                 if(err) throw err
-                const fileExtension = img.name.split(".").pop()
-                let fileName = uuid.v4() + `.${fileExtension}`
-                img.mv(path.resolve(__dirname, "..", "static/category", fileName))
+                // const fileExtension = img.name.split(".").pop()
+                let fileName = uuid.v4() + `.webp`
+
+                await sharp(img.data)
+                    .resize({
+                        width: 320,
+                        height: 240
+                    })
+                    .toFormat('webp')
+                    .toFile(path.resolve(__dirname, "..", "static/category", fileName))
+                // img.mv(path.resolve(__dirname, "..", "static/category", fileName))
                 const updateCategory = await sequelize.models.category.update({...tailData, img: `category/${fileName}`}, { where: { id }})
                 const newCategory = await sequelize.models.category.findOne({where: { id }})
                 return res.json(newCategory)

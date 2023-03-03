@@ -58,8 +58,6 @@ const getAll = async (req, res) => {
             .map(item => item.trim().replace(",", "").toLowerCase())
             .filter(item => item != "")
         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
-        // audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.like]: `%${arrKeywords}%`}}, limit, offset}) 
-        // audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: sequelize.where(sequelize.fn('LOWER', sequelize.col("keywords")), 'LIKE', `%${lookupValue}%`)}, limit, offset})
     } if(categoryId && keywords) {
         const keywordsArr = keywords.trim().split(" ")
             .map(item => item.trim().replace(",", "").toLowerCase())
@@ -118,11 +116,18 @@ const update = async (req, res) => {
     }
     try {
         if(img && !audio) {
-            const imgExpension = img.name.split(".").pop()
-            const imgName = uuid.v4() + `.${imgExpension}`
+            // const imgExpension = img.name.split(".").pop()
+            const imgName = uuid.v4() + `.webp`
             fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.img), async err => {
                 if(err) throw err
-                img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+                // img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+                await sharp(img.data)
+                    .resize({
+                        width: 320,
+                        height: 240
+                    })
+                    .toFormat('webp')
+                    .toFile(path.resolve(__dirname, "..", "static/music/logo", imgName))
                 const Audio = await sequelize.models.Audio.update({...tailData, img: `music/logo/${imgName}`}, {where: { id }})
                 const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
                 return res.json(newAudio)
@@ -142,18 +147,26 @@ const update = async (req, res) => {
 
         } if(img && audio) {
             const audioExtension = audio.name.split(".").pop()
-            const imgExtension = img.name.split(".").pop()
+            // const imgExtension = img.name.split(".").pop()
 
             const audioName = uuid.v4() + `.${audioExtension}`
-            const imgName = uuid.v4() + `.${imgExtension}`
+            const imgName = uuid.v4() + `.webp`
 
             fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.audio), async err => {
                 if(err) throw err
                 audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
                 fs.unlink(path.resolve(__dirname, "..", "static", oldAudio.img), async err => {
                     if(err) throw err
-                    img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+                    // img.mv(path.resolve(__dirname, "..", "static/music/logo", imgName))
+                    await sharp(img.data)
+                        .resize({
+                            width: 320,
+                            height: 240
+                        })
+                        .toFormat('webp')
+                        .toFile(path.resolve(__dirname, "..", "static/music/logo", imgName))
                     audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
+
                     const Audio = await sequelize.models.Audio.update({...tailData,  audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`}, {where: { id }})
                     const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
                     return res.json(newAudio)
