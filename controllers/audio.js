@@ -102,8 +102,8 @@ const update = async (req, res) => {
     let audio;
     let img;
     if(req.files) {
-        audio = req.files.audio;
-        img = req.files.img
+        audio = req?.files?.audio;
+        img = req?.files?.img
     }
 
     if(!id) {
@@ -165,7 +165,6 @@ const update = async (req, res) => {
                         })
                         .toFormat('webp')
                         .toFile(path.resolve(__dirname, "..", "static/music/logo", imgName))
-                    audio.mv(path.resolve(__dirname, "..", "static/music/audio", audioName))
 
                     const Audio = await sequelize.models.Audio.update({...tailData,  audio: `music/audio/${audioName}`, img: `music/logo/${imgName}`}, {where: { id }})
                     const newAudio = await sequelize.models.Audio.findOne({ where: { id }})
@@ -178,6 +177,7 @@ const update = async (req, res) => {
             return res.json(newAudio)
         }
     } catch(e) {
+        console.log(123, e);
         throw new Error(e)
     }
 
