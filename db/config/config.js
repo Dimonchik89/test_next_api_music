@@ -40,7 +40,8 @@ module.exports = {
         "require": true,
         "rejectUnauthorized": false,
         // 'ca': process.env.CACERT
-        'ca': fs.readFileSync('./ca-certificate.crt').toString()
+        // 'ca': fs.readFileSync('./ca-certificate.crt').toString()
+        "ca": fs.readFileSync(path.join(__dirname, "..", "..", './ca-certificate.crt'))
       }
     }
   }
