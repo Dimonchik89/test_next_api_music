@@ -22,7 +22,6 @@ app.use(cors({
     origin: process.env.SITE_URL,
     credentials: false
 }))
-// app.use(cors({ origin: "http://localhost:3000/", credentials: false }))
 
 app.use("/api", router)
 
@@ -41,17 +40,26 @@ const start = async () => {
 
 start()
 
-  // "development": {
-  //   "username": "eaojnkakniyrld",
-  //   "password": "5f21343b1e4dc26efa51ecfbb37d7fead3b7bfd7d7afdc5247aa5633fd4e25e9",
-  //   "database": "de34lcejheehn6",
-  //   "host": "ec2-54-228-125-183.eu-west-1.compute.amazonaws.com",
-  //   "dialect": "postgres",
-  //   "port": 5432,
-  //    "dialectOptions": {
-  //     "ssl": { 
-  //       "require": true,
-  //       "rejectUnauthorized": false
-  //     }
-  //   }
-  // },
+//   "development": {
+//     "username": "igddrqxhgjqppd",
+//     "password": "a7e23e53c1bffccd9f8f0addff63efb0729f31dadf1e9c63016ab14906f653af",
+//     "database": "d9mnvac06utonn",
+//     "host": "ec2-52-48-159-67.eu-west-1.compute.amazonaws.com",
+//     "dialect": "postgres",
+//     "port": 5432,
+//      "dialectOptions": {
+//       "ssl": { 
+//         "require": true,
+//         "rejectUnauthorized": false
+//       }
+//     }
+//   },
+
+// username = doadmin
+// password = AVNS_d2C-jKCYNawehoDwn5C
+// host = db-postgresql-fra1-22717-do-user-13608356-0.b.db.ondigitalocean.com
+// port = 25060
+// database = defaultdb
+// sslmode = require
+
+// PGPASSWORD=AVNS_d2C-jKCYNawehoDwn5C pg_restore -U doadmin -h db-postgresql-fra1-22717-do-user-13608356-0.b.db.ondigitalocean.com -p 25060 -d defaultdb 

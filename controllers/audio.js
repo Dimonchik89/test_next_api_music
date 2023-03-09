@@ -189,9 +189,10 @@ const download = async (req, res) => {
         const pathToSharedDirectory = path.resolve(__dirname, "..", "static")
         const filePath = pathToSharedDirectory + '/' + filename
         if(fs.existsSync(filePath))
-        return res.download(filePath, (err) => {
-            console.log('err', err)
-        });
+        // return res.download(filePath, (err) => {
+        //     console.log('err', err)
+        // });
+        return res.download(filePath);
     } catch(e) {
         return res.status(500).json({message: "Download error"})
     }
