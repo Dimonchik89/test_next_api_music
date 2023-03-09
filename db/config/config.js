@@ -6,12 +6,9 @@ module.exports = {
     "username": process.env.DB_USERNAME,
     "password": process.env.DB_PASSWORD,
     "database": process.env.DB_NAME,
-    "host": "db-postgresql-fra1-22717-do-user-13608356-0.b.db.ondigitalocean.com",
+    "host": process.env.DB_HOST,
     "dialect": "postgres",
     "port": process.env.DB_PORT,
-    "define": {
-			timestamps: false,
-		},
     "dialectOptions": {
       "ssl": { 
         "require": true,
