@@ -8,8 +8,9 @@ module.exports = {
     "port": process.env.DB_PORT,
      "dialectOptions": {
       "ssl": { 
-        // "require": true,
-        "rejectUnauthorized": false
+        "require": true,
+        "rejectUnauthorized": false,
+        'ca': fs.readFileSync('../../ca-certificate.crt').toString()
       }
     }
   },
@@ -29,8 +30,9 @@ module.exports = {
     "port": process.env.DB_PORT,
      "dialectOptions": {
       "ssl": { 
-        // "require": true,
-        "rejectUnauthorized": false
+        "require": true,
+        "rejectUnauthorized": false,
+        'ca': fs.readFileSync('../../ca-certificate.crt').toString()
       }
     }
   }
