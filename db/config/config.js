@@ -3,12 +3,12 @@ const path = require('path');
 
 module.exports = {
   "development": {
-    "username": "doadmin",
-    "password": "AVNS_d2C-jKCYNawehoDwn5C",
-    "database": "defaultdb",
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_NAME,
     "host": "db-postgresql-fra1-22717-do-user-13608356-0.b.db.ondigitalocean.com",
     "dialect": "postgres",
-    "port": 25060,
+    "port": process.env.DB_PORT,
     "define": {
 			timestamps: false,
 		},
