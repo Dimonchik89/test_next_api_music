@@ -8,11 +8,13 @@ module.exports = {
     "host": process.env.DB_HOST,
     "dialect": "postgres",
     "port": process.env.DB_PORT,
-     "dialectOptions": {
+    // "ssl":true,
+    "dialectOptions": {
       "ssl": { 
         "require": true,
         "rejectUnauthorized": false,
-        'ca': process.env.CACERT
+        // 'ca': process.env.CACERT
+        "ca": fs.readFileSync('../../ca-certificate.crt').toString()
       }
     }
   },
@@ -30,12 +32,13 @@ module.exports = {
     "host": process.env.DB_HOST,
     "dialect": "postgres",
     "port": process.env.DB_PORT,
-     "dialectOptions": {
+    // "ssl":true,
+    "dialectOptions": {
       "ssl": { 
         "require": true,
         "rejectUnauthorized": false,
-        'ca': process.env.CACERT
-        // 'ca': fs.readFileSync('../../ca-certificate.crt').toString()
+        // 'ca': process.env.CACERT
+        'ca': fs.readFileSync('../../ca-certificate.crt').toString()
       }
     }
   }
