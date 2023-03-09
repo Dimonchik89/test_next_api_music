@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 module.exports = {
   "development": {
     "username": process.env.DB_USERNAME,
@@ -10,7 +12,7 @@ module.exports = {
       "ssl": { 
         "require": true,
         "rejectUnauthorized": false,
-        'ca': fs.readFileSync('../../ca-certificate.crt').toString()
+        'ca': process.env.CACERT
       }
     }
   },
@@ -32,7 +34,8 @@ module.exports = {
       "ssl": { 
         "require": true,
         "rejectUnauthorized": false,
-        'ca': fs.readFileSync('../../ca-certificate.crt').toString()
+        'ca': process.env.CACERT
+        // 'ca': fs.readFileSync('../../ca-certificate.crt').toString()
       }
     }
   }
