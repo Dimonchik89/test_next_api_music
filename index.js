@@ -19,7 +19,7 @@ app.use(express.static(path.resolve(__dirname, "static")))
 app.use(fileUpload({}))
 app.use(cors({
     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
-    origin: process.env.SITE_URL,
+    origin: [process.env.SITE_URL, 'http://localhost:3000'],
     credentials: false
 }))
 
