@@ -1,4 +1,5 @@
 'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -6,10 +7,10 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        // type: Sequelize.UUID,
-        // defaultValue: Sequelize.UUIDV4,
-        autoIncrement: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.fn('gen_random_uuid'),
+        // autoIncrement: true,
+        // type: Sequelize.INTEGER
       },
       email: {
         type: Sequelize.STRING

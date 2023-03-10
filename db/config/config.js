@@ -13,8 +13,6 @@ module.exports = {
       "ssl": { 
         "require": true,
         "rejectUnauthorized": false,
-        // 'ca': process.env.CACERT
-        // "ca": fs.readFileSync('./ca-certificate.crt').toString()
         "ca": fs.readFileSync(path.join(__dirname, "..", "..", './ca-certificate.crt'))
       }
     }
@@ -33,14 +31,11 @@ module.exports = {
     "host": process.env.DB_HOST,
     "dialect": "postgres",
     "port": process.env.DB_PORT,
-    // "ssl":true,
     "dialectOptions": {
       "ssl": { 
         "require": true,
         "rejectUnauthorized": false,
-        // 'ca': process.env.CACERT
-        // 'ca': fs.readFileSync('./ca-certificate.crt').toString()
-        "ca": fs.readFileSync(path.join(__dirname, "..", "..", './ca-certificate.crt'))
+        // "ca": fs.readFileSync(path.join(__dirname, "..", "..", './ca-certificate.crt'))
       }
     }
   }
