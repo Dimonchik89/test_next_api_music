@@ -10,7 +10,7 @@ const sendEmail = async (req, res) => {
 
     const message = "User downloaded your music"
     const options = {
-        from: "TuneBox",
+        from: "<TuneBox>",
         to: process.env.EMAIL,
         subject: "New download",
         text: message,
@@ -23,26 +23,26 @@ const sendEmail = async (req, res) => {
     return res.json({message: "Email send"})
 }
 
-const sendFix = (req, res) => {
-    const { text } = req.body;
+// const sendFix = (req, res) => {
+//     const { text } = req.body;
 
-    if(!text) {
-        return res.status(404).json({message: "Add your proposition"})
-    }
+//     if(!text) {
+//         return res.status(404).json({message: "Add your proposition"})
+//     }
 
-    const message = 'User send proposition'
-    const options = {
-        from: "TuneBox",
-        to: process.env.EMAIL,
-        subject: "New Proposition",
-        text: message,
-        html: HTML_TEMPLATE_FIX(text),
-    }
-    SENDMAIL(options, (info) => {
-        console.log("Email sent successfully");
-        console.log("MESSAGE ID: ", info.messageId);
-    });
-    return res.json({message: "Email send"})
-}
+//     const message = 'User send proposition'
+//     const options = {
+//         from: "TuneBox",
+//         to: process.env.EMAIL,
+//         subject: "New Proposition",
+//         text: message,
+//         html: HTML_TEMPLATE_FIX(text),
+//     }
+//     SENDMAIL(options, (info) => {
+//         console.log("Email sent successfully");
+//         console.log("MESSAGE ID: ", info.messageId);
+//     });
+//     return res.json({message: "Email send"})
+// }
 
-module.exports = {sendEmail, sendFix}
+module.exports = {sendEmail}
