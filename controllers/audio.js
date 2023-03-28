@@ -43,34 +43,7 @@ const create = async (req, res) => {
 }
 
 const getAll = async (req, res) => {
-    // try {
-    //     let {categoryId, keywords, limit, page} = req.query
-    //     // const lookupValue = keywords?.toLowerCase()
-
-    //     page = page || 1
-    //     limit = limit || 9
-    //     const offset = page * limit - limit
-    //     let audio;
-
-    //     if(categoryId && !keywords) {
-    //         audio = await sequelize.models.Audio.findAndCountAll({where: { categoryId: {[Op.like]: `%${categoryId}%`}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
-    //     } if(!categoryId && keywords) {
-    //         const keywordsArr = keywords.trim().split(" ")
-    //             ?.map(item => item.trim().replace(",", "").toLowerCase())
-    //             ?.filter(item => item != "")
-    //         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
-    //     } if(categoryId && keywords) {
-    //         const keywordsArr = keywords.trim().split(" ")
-    //             ?.map(item => item.trim().replace(",", "").toLowerCase())
-    //             ?.filter(item => item != "")
-    //         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
-    //     } if(!categoryId && !keywords) {
-    //         // audio = await sequelize.models.Audio.findAndCountAll({limit, offset})
-    //         audio = await sequelize.models.Audio.findAndCountAll({limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
-    //     }
-    // } catch(e) {
-    //     console.error(`\n [Audio controller] Error \n`, e)
-    // }
+    try {
         let {categoryId, keywords, limit, page} = req.query
         // const lookupValue = keywords?.toLowerCase()
 
@@ -95,7 +68,35 @@ const getAll = async (req, res) => {
             // audio = await sequelize.models.Audio.findAndCountAll({limit, offset})
             audio = await sequelize.models.Audio.findAndCountAll({limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
         }
-    return res.json(audio)
+        return res.json(audio)
+    } catch(e) {
+        console.error(`\n [Audio controller] Error \n`, e)
+    }
+    //     let {categoryId, keywords, limit, page} = req.query
+    //     // const lookupValue = keywords?.toLowerCase()
+
+    //     page = page || 1
+    //     limit = limit || 9
+    //     const offset = page * limit - limit
+    //     let audio;
+
+    //     if(categoryId && !keywords) {
+    //         audio = await sequelize.models.Audio.findAndCountAll({where: { categoryId: {[Op.like]: `%${categoryId}%`}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
+    //     } if(!categoryId && keywords) {
+    //         const keywordsArr = keywords.trim().split(" ")
+    //             ?.map(item => item.trim().replace(",", "").toLowerCase())
+    //             ?.filter(item => item != "")
+    //         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
+    //     } if(categoryId && keywords) {
+    //         const keywordsArr = keywords.trim().split(" ")
+    //             ?.map(item => item.trim().replace(",", "").toLowerCase())
+    //             ?.filter(item => item != "")
+    //         audio = await sequelize.models.Audio.findAndCountAll({where: { keywords: {[Op.contains]: keywordsArr}}, limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
+    //     } if(!categoryId && !keywords) {
+    //         // audio = await sequelize.models.Audio.findAndCountAll({limit, offset})
+    //         audio = await sequelize.models.Audio.findAndCountAll({limit, offset, order: [ [ 'createdAt', 'DESC' ]]})
+    //     }
+    // return res.json(audio)
 }
 
 const deleteAudio = async (req, res) => {
